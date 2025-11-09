@@ -11,6 +11,7 @@ vim.keymap.set('n', 'k', 'gk', { noremap = true, silent = true })
 vim.keymap.set('n', '<Down>', 'gj', { noremap = true, silent = true })
 vim.keymap.set('n', '<Up>', 'gk', { noremap = true, silent = true })
 vim.keymap.set("n", "dd", '"_dd', { noremap = true })
+vim.keymap.set("v", "d", '"_d', { noremap = true })
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.guicursor = "n:block,v:ver25,i:ver25,r:hor20,o:hor50"
