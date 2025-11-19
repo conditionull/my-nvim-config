@@ -13,6 +13,10 @@ vim.keymap.set('n', '<Up>', 'gk', { noremap = true, silent = true })
 vim.keymap.set("n", "dd", '"_dd', { noremap = true })
 vim.keymap.set("v", "d", '"_d', { noremap = true })
 
+-- Alt + Up / Alt + Down to move the current line up or down
+vim.keymap.set("i", "<A-Up>",   "<Esc>:m .-2<CR>==gi")
+vim.keymap.set("i", "<A-Down>", "<Esc>:m .+1<CR>==gi")
+
 vim.opt.clipboard = "unnamedplus"
 vim.opt.guicursor = "n:block,v:ver25,i:ver25,r:hor20,o:hor50"
 
