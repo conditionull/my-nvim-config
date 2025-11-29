@@ -136,6 +136,15 @@ require('gitsigns').setup {
     delete       = { text = '_' },   -- red line for deletions
     topdelete    = { text = '‾' },
     changedelete = { text = '~' },
+    untracked    = { text = '┆' },
+  },
+  signs_staged = {
+    add          = { text = '┃' },
+    change       = { text = '┃' },
+    delete       = { text = '_' },
+    topdelete    = { text = '‾' },
+    changedelete = { text = '~' },
+    untracked    = { text = '┆' },
   },
   signcolumn = true,  -- show signs in gutter
   numhl      = true,
