@@ -100,16 +100,19 @@ cmp.setup({
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 vim.lsp.config('pyright', {
-  capabilities = capabilities,
+  cmd = { "pyright-langserver", "--stdio" },
+  filetypes = { "python" },
+  root_markers = { "pyrightconfig.json", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
   settings = {
     python = {
       analysis = {
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
-        diagnosticMode = 'workspace',
+        diagnosticMode = 'openFilesOnly',
       },
     },
   },
+  capabilities = capabilities,
 })
 
 vim.lsp.enable('pyright')
