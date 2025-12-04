@@ -43,6 +43,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'stevearc/conform.nvim'
+Plug 'windwp/nvim-autopairs'
 
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -54,6 +55,8 @@ Plug 'nvim-tree/nvim-web-devicons'
 
 call plug#end()
 ]]
+
+require("nvim-autopairs").setup {}
 
 -- Status line
 require('lualine').setup{
