@@ -92,6 +92,14 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-e>'] = cmp.mapping.abort(),
+
+    ["<Esc>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.abort() -- close menu, stay in insert mode
+      else
+        fallback() -- fallback to normal <Esc>
+      end
+    end, { "i" }),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
