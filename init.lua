@@ -49,6 +49,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
+Plug 'rachartier/tiny-inline-diagnostic.nvim'
 
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
@@ -128,10 +129,23 @@ vim.lsp.config('pyright', {
 
 vim.lsp.enable('pyright')
 
+local diag = require("tiny-inline-diagnostic")
+diag.setup({
+    options = {
+        add_messages = {
+            display_count = true,
+        },
+        multilines = {
+            enabled = true,
+        },
+    },
+})
+diag.change_severities({ vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN })
+
 -- Squiggly wiggly error lines
 vim.diagnostic.config({
-  virtual_text = false,   -- disable inline text
-  signs = false,          -- diable signs in gutter
+  virtual_text = false, -- inlinee text
+  signs = false,          -- signs in gutter
   underline = {           -- only underline errors and warnings
     severity = {
       min = vim.diagnostic.severity.WARN,
