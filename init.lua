@@ -2,6 +2,9 @@
 vim.opt.number = true
 -- Wrapping
 vim.opt.wrap = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
 vim.opt.linebreak = true
 vim.opt.breakindent = true -- wrapped lines maintain proper indentation
 vim.opt.showbreak = "↪ "
@@ -12,6 +15,11 @@ vim.keymap.set('n', '<Down>', 'gj', { noremap = true, silent = true })
 vim.keymap.set('n', '<Up>', 'gk', { noremap = true, silent = true })
 vim.keymap.set("n", "dd", '"_dd', { noremap = true })
 vim.keymap.set("v", "d", '"_d', { noremap = true })
+-- shift up/down 4 spaces
+vim.keymap.set('n', '<S-Down>', '4j', { noremap = true, silent = true })
+vim.keymap.set('n', '<S-Up>', '4k', { noremap = true, silent = true })
+vim.keymap.set('i', '<S-Down>', '<Esc>4ja', { noremap = true, silent = true })
+vim.keymap.set('i', '<S-Up>', '<Esc>4ka', { noremap = true, silent = true })
 
 -- Alt + Up / Alt + Down to move the current line up or down
 vim.keymap.set("i", "<A-Up>",   "<Esc>:m .-2<CR>==gi")
@@ -30,8 +38,10 @@ vim.keymap.set("n", "gs", function()
   print("file saved")
 end, { desc = "Save file with gs" })
 
--- Yank whole file to system clipboard
+-- Yank file to system clipboard
 vim.keymap.set("n", "<leader>Y", 'ggVGy', { noremap = true, silent = true })
+
+vim.cmd([[command! Q q]])
 
 -- vim-plug
 vim.cmd [[
@@ -43,6 +53,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'stevearc/conform.nvim'
+Plug 'mason-org/mason.nvim'
+Plug 'mason-org/mason-lspconfig.nvim'
 Plug 'windwp/nvim-autopairs'
 
 Plug 'hrsh7th/nvim-cmp'
@@ -63,7 +75,6 @@ require("nvim-autopairs").setup {}
 require('lualine').setup{
   options = { theme = 'nightfly' }
 }
-
 -- Theme
 require("catppuccin").setup({
   flavour = "mocha",
@@ -73,21 +84,41 @@ require("catppuccin").setup({
       nvimtree = true
   }
 })
-
 vim.cmd.colorscheme("catppuccin")
 
 -- Treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python" }, -- parsers
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", "typescript", "javascript", "go" }, -- parsers
+  highlight = { enable = true },
+  indent = { enable = true },
 }
+
+
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      },
+      diagnostics = {
+        globals = {
+          'vim',
+          'require',
+        },
+      },
+    },
+  },
+})
+
+-- Mason
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = { "pyright", "lua_ls", "ts_ls", "gopls", "clangd" },
+    automatic_enable = true,
+})
 
 -- nvim-cmp setup
 local cmp = require'cmp'
-
 cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-Space>'] = cmp.mapping.complete(),
@@ -109,26 +140,6 @@ cmp.setup({
   }),
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-vim.lsp.config('pyright', {
-  cmd = { "pyright-langserver", "--stdio" },
-  filetypes = { "python" },
-  root_markers = { "pyrightconfig.json", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-        diagnosticMode = 'openFilesOnly',
-      },
-    },
-  },
-  capabilities = capabilities,
-})
-
-vim.lsp.enable('pyright')
-
 local diag = require("tiny-inline-diagnostic")
 diag.setup({
     options = {
@@ -144,14 +155,9 @@ diag.change_severities({ vim.diagnostic.severity.ERROR, vim.diagnostic.severity.
 
 -- Squiggly wiggly error lines
 vim.diagnostic.config({
-  virtual_text = false, -- inlinee text
-  signs = false,          -- signs in gutter
-  underline = {           -- only underline errors and warnings
-    severity = {
-      min = vim.diagnostic.severity.WARN,
-      max = vim.diagnostic.severity.ERROR,
-    }
-  },
+  virtual_text = false, -- inline text
+  signs = true,          -- signs in gutter
+  underline = true,
   update_in_insert = true,
   severity_sort = true, -- show higher severity first
 })
@@ -182,22 +188,3 @@ require('gitsigns').setup {
   attach_to_untracked = true,
 }
 
--- formatters setup
-require("conform").setup({
-  formatters_by_ft = {
-    lua = { "stylua" },
-    python = { "isort", "black" },
-  },
-})
-
-vim.api.nvim_create_user_command("Format", function(args)
-  local range = nil
-  if args.count ~= -1 then
-    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-    range = {
-      start = { args.line1, 0 },
-      ["end"] = { args.line2, end_line:len() },
-    }
-  end
-  require("conform").format({ async = true, lsp_format = "fallback", range = range })
-end, { range = true })
