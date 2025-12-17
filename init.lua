@@ -149,7 +149,7 @@ require('hover').config({
   preview_window = false,
   title = true,
   mouse_providers = {
-    'hover.providers.lsp',
+    -- 'hover.providers.lsp',
   },
   mouse_delay = 800
 })
