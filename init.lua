@@ -54,24 +54,30 @@ vim.cmd([[command! Q q]])
 vim.cmd [[
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' } " :MarkdownPreview
+
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'neovim/nvim-lspconfig'
+
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'stevearc/conform.nvim'
+
+Plug 'neovim/nvim-lspconfig'
 Plug 'mason-org/mason.nvim'
 Plug 'mason-org/mason-lspconfig.nvim'
+
 Plug 'windwp/nvim-autopairs'
+
 Plug 'lewis6991/hover.nvim'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
+
+Plug 'hrsh7th/nvim-cmp' " completion engine
+Plug 'hrsh7th/cmp-nvim-lsp' " asks LSP server for relevant suggestions
+Plug 'hrsh7th/cmp-buffer' " suggestions for current buffer (code context)
+Plug 'hrsh7th/cmp-path' " auto suggests filesystem path completions
+
 Plug 'rachartier/tiny-inline-diagnostic.nvim'
 
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-lualine/lualine.nvim' " status bar
+Plug 'nvim-tree/nvim-web-devicons' " icons to be used in status bar
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " neovim theme
 
 call plug#end()
 ]]
@@ -93,14 +99,6 @@ require("catppuccin").setup({
 })
 vim.cmd.colorscheme("catppuccin")
 
--- Treesitter
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python", "typescript", "javascript", "go" }, -- parsers
-  highlight = { enable = true },
-  indent = { enable = true },
-}
-
-
 vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
@@ -117,14 +115,14 @@ vim.lsp.config('lua_ls', {
   },
 })
 
--- Mason
+-- mason (easily install languuage servers for error detection, definitions, hints, etc.)
 require("mason").setup()
 require("mason-lspconfig").setup({
     ensure_installed = { "pyright", "lua_ls", "ts_ls", "gopls", "clangd" },
     automatic_enable = true,
 })
 
--- Hover (floating window)
+-- Hover (floating window shift+k for window)
 require('hover').config({
   --- List of modules names to load as providers.
   --- @type (string|Hover.Config.Provider)[]
@@ -194,11 +192,11 @@ cmp.setup({
       end
     end, { "i" }),
   }),
-  sources = cmp.config.sources({
+  sources = {
     { name = 'nvim_lsp' },
     { name = 'buffer' },
     { name = 'path' },
-  }),
+  }
 })
 
 local diag = require("tiny-inline-diagnostic")
