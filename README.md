@@ -25,7 +25,7 @@ https://github.com/user-attachments/assets/824b5df2-74b0-4d45-ba79-c063299ad949
 
 https://github.com/user-attachments/assets/30229ddb-de66-4480-a92e-790afe71feb6
 > [!NOTE]
-> Press `Ctrl + n`, then `d`, `i`, and type to replace the completion match. You can also use the standard vim motion but I find myself executing this quicker, possible skill issue. Docs here: https://github.com/mg979/vim-visual-multi
+> Press `Ctrl + n` until all matches are highlighted, then `d`, then `i`, and type to replace the completion matches. You can also use the standard vim motion but I find myself executing this quicker, possible skill issue. Docs here: https://github.com/mg979/vim-visual-multi
 
 #### Git signs
 <img width="450" height="178" alt="image" src="https://github.com/user-attachments/assets/a22f8772-6fc2-4f99-8feb-a9b2670283c7" />
