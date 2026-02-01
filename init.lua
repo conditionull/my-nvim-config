@@ -1,6 +1,4 @@
--- init.lua
 vim.opt.number = true
--- Wrapping
 vim.opt.wrap = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
@@ -9,21 +7,16 @@ vim.opt.linebreak = true
 vim.opt.breakindent = true -- wrapped lines maintain proper indentation
 vim.opt.showbreak = "↪ "
 vim.opt.guicursor = "n:block,v:ver25,i:ver25,r:hor20,o:hor50"
--- Make 'j' and 'k' move by visual lines when wrapped
+
+-- j/k move by visual lines 
 vim.keymap.set('n', 'j', 'gj', { noremap = true, silent = true })
 vim.keymap.set('n', 'k', 'gk', { noremap = true, silent = true })
 vim.keymap.set('n', '<Down>', 'gj', { noremap = true, silent = true })
 vim.keymap.set('n', '<Up>', 'gk', { noremap = true, silent = true })
 
 vim.opt.clipboard = "unnamedplus"
-vim.keymap.set("n", "dd", '"_dd', { noremap = true })
-vim.keymap.set("v", "d", '"_d', { noremap = true })
 vim.keymap.set({ "n", "v" }, "d", '"_d', { noremap = true })
 vim.keymap.set({ "n", "v" }, "D", '"_D', { noremap = true })
-vim.keymap.set({ "n", "v" }, "x", '"_x', { noremap = true })
-vim.keymap.set({ "n", "v" }, "X", '"_X', { noremap = true })
-vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
-vim.keymap.set({ "n", "v" }, "C", '"_C', { noremap = true })
 
 -- shift up/down 4 spaces
 vim.keymap.set('n', '<S-Down>', '4j', { noremap = true, silent = true })
@@ -31,7 +24,7 @@ vim.keymap.set('n', '<S-Up>', '4k', { noremap = true, silent = true })
 vim.keymap.set('i', '<S-Down>', '<Esc>4ja', { noremap = true, silent = true })
 vim.keymap.set('i', '<S-Up>', '<Esc>4ka', { noremap = true, silent = true })
 
--- Alt + Up / Alt + Down to move the current line up or down
+-- Alt + Up / Alt + Down to move line(s) up or down
 vim.keymap.set("i", "<A-Up>",   "<Esc>:m .-2<CR>==gi")
 vim.keymap.set("i", "<A-Down>", "<Esc>:m .+1<CR>==gi")
 vim.keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv")
@@ -39,13 +32,13 @@ vim.keymap.set("v", "<A-Up>",   ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<A-Down>", ":m .+1<CR>==")
 vim.keymap.set("n", "<A-Up>",   ":m .-2<CR>==")
 
--- Save with 'gs' because i don't like pressing ':'
+-- optionally save with 'gs' 
 vim.keymap.set("n", "gs", function()
   vim.cmd("w")  -- run :w to save
   print("file saved")
 end, { desc = "Save file with gs" })
 
--- Yank file to system clipboard
+-- yank file to system clipboard
 vim.keymap.set("n", "<leader>Y", 'ggVGy', { noremap = true, silent = true })
 
 vim.cmd([[command! Q q]])
