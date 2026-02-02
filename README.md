@@ -32,13 +32,11 @@ https://github.com/user-attachments/assets/30229ddb-de66-4480-a92e-790afe71feb6
 
 #### Binds and other stuff
   
-- `j` / `k` and arrow keys move by `visual lines` when lines are wrapped to avoid skips.
+- `j` / `k` + arrow keys move by `visual lines` when lines are wrapped to avoid skips.
 
 **Yanking**  
 - Uses system clipboard (`unnamedplus`) when yanking
-- `d, D, x, X, c, C` use the **black hole register**, so any type of deletion doesn't overwrite clipboard content.
-> [!NOTE]
-> I really dislike yanking something unless ran explicitly with `ggVG` or `y`
+- `d,D` uses the **black hole register**, so a deletion doesn't overwrite clipboard content.
 
 **Navigation**  
 - `Shift + Up/Down` moves cursor **4 lines** at a time in `normal` and `insert` mode to hop around quickly
