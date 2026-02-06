@@ -240,3 +240,13 @@ require('gitsigns').setup {
   attach_to_untracked = true,
 }
 
+vim.cmd([[
+  " search anything inside parent dir
+  command! -nargs=+ Search execute 'silent grep! <q-args> **/*' | copen
+]])
+
+vim.cmd([[
+  " close menu after selection
+  autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
+]])
+
